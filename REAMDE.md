@@ -13,6 +13,30 @@ This chart will do the following:
 - Optionally, enable ingress to access the WordPress site.
 - Configure persistence for WordPress and MySQL for data storage.
 
+## Install Sealed Secrets
+
+Add Repo:
+```bash
+❯ helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+"sealed-secrets" has been added to your repositories
+```
+
+Install:
+```bash
+helm install sealed-secrets -n kube-system --set-string fullnameOverride=sealed-secrets-controller sealed-secrets/sealed-secrets
+```
+Instal Kubeseal client:
+```bash
+KUBESEAL_VERSION='' # Set this to, for example, KUBESEAL_VERSION='0.23.0'
+wget "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION:?}/kubeseal-${KUBESEAL_VERSION:?}-linux-amd64.tar.gz"
+tar -xvzf kubeseal-${KUBESEAL_VERSION:?}-linux-amd64.tar.gz kubeseal
+sudo install -m 755 kubeseal /usr/local/bin/kubeseal
+```
+Generate secret from old secret file (tp04):
+```bash
+kubeseal < mysql-secret.yaml > sealed-mysql-secret.yaml
+```
+
 ## Installing the Chart
 
 To install the chart with the release name my-wordpress:
@@ -23,10 +47,14 @@ $ helm install my-wordpress ./wordpress-chart
 
 ## Passwords
 
-After installing chart you can remove `secret.yaml` file.
-
+## check if password is set:
 ```bash
-$ rm secret.yaml
+    ~/Ynov/DevOps/wik-dps-tp05/wordpress-chart/templates  on   main +16 !6 ················································ at minikube/tp05 ⎈  at 15:12:42  ─╮
+❯ kubectl get sealedsecrets -n tp05                                                                                                                                      ─╯
+
++ kubectl get sealedsecrets -n tp05
+  NAME         STATUS   SYNCED   AGE
+  mysql-pass            True     38s
 ```
 
 ## Uninstalling the Chart
@@ -102,11 +130,11 @@ Alternatively, a YAML file that specifies the values for the above parameters ca
 $ helm install my-wordpress ./wordpress-chart --values values.yaml
 ```
 
-> **Tip**: You can use the default [values.yaml](values.yaml)
+> **Tip**: You can use the default [values.yaml](wordpress-chart/values.yaml)
 
 ## Persistence
 
-The wordpress and mysql images store the WordPress site data and MySQL database. To persist data, enable the persistence and use a PersistentVolumeClaim. You can use the default [values.yaml](values.yaml)
+The wordpress and mysql images store the WordPress site data and MySQL database. To persist data, enable the persistence and use a PersistentVolumeClaim. You can use the default [values.yaml](wordpress-chart/values.yaml)
 
 ## Ingress
 
@@ -116,51 +144,6 @@ To enable ingress integration, please set `wordpress.ingress.enabled` to `true`
 
 ## Customizing WordPress Configuration
 Modify the values.yaml file to change the default WordPress configurations, such as Database details, resource limits, and more.
-
-## PGP Keys
-
-Install
-```bash
-sudo apt-get update
-sudo apt-get install gnupg
-```
-Generate key:
-```bash
-gpg --full-generate-key
-```
-export key:
-```bash
-❯ gpg --export >~/.gnupg/pubring.gpg
-❯ gpg --export-secret-keys >~/.gnupg/secring.gpg
-```
-```bash
-❯ gpg --list-secret-keys
-
-/home/lexit/.gnupg/pubring.kbx
-------------------------------
-sec   rsa3072 2023-11-20 [SC]
-      6939480A21C06A570F2EBA588E07FC3D3A77EFA3
-uid           [ultimate] lexit <lexit@arpanode.fr>
-ssb   rsa3072 2023-11-20 [E]
-```
-
-Sign chart:
-```bash
-❯ helm package --sign --key lexit@arpanode.fr --keyring ~/.gnupg/secring.gpg ./wordpress-chart
-
-Password for key "lexit <lexit@arpanode.fr>" >  
-Successfully packaged chart and saved it to: /home/lexit/Ynov/DevOps/wik-dps-tp05/wordpress-0.1.0.tgz
-```
-Check key:
-```bash
-❯ helm verify wordpress-0.1.0.tgz
-
-Signed by: lexit <lexit@arpanode.fr>
-Using Key With Fingerprint: 6939480A21C06A570F2EBA588E07FC3D3A77EFA3
-Chart Hash Verified: sha256:479280f947212d49c0a9b721d982006a450460d5dc024d25a4c0cad620d86c18
-```
-
-
 
 ## Accessing WordPress
 After deploying the chart, WordPress can be accessed:
