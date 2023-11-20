@@ -1,0 +1,26 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+apiVersion: v2
+appVersion: 6.2.1
+description: A Helm chart for WordPress with MySQL
+name: wordpress
+type: application
+version: 0.1.0
+
+...
+files:
+  wordpress-0.1.0.tgz: sha256:479280f947212d49c0a9b721d982006a450460d5dc024d25a4c0cad620d86c18
+-----BEGIN PGP SIGNATURE-----
+
+wsDcBAEBCgAQBQJlWzO4CRCOB/w9OnfvowAAURQMAH60NUaLu7KVjzFheuKWuz3A
+ECA2loXSTRVJ4wiL06JlYCZfStxmwGlx5++CnOmllyjUFCL4W0Rgc2Ibtl5BF3Te
+Jwda5YACJvIDu5r1kdLCA7Fo+QrN3wbBBgX6MHC98Nve664LfPDRaH+RHhUW5y5o
+Ve1C1eaXBr1KDyFXqu9KGY+90+TpMD9s+bSiUxf0mVYAijfGXMSi3e8teh7wCqu+
+wSB7sS+Cy1DkFzfjOBOPE3iK7SLof/YivojhYq8qYyJlOwI+ECs7ofGtKt0aqra1
+dYIVJfEOiH+SaLUodg/H96u65euCE8gYkRHDdWE9tqoUqG1Z2XpqWCvM/jJa5V+p
+VPsc+0BnX6ZCj4/BopcNDUa1paWHMhQLnK2sAasCvhke6tgbBdPHWo8K7DoMUnyo
+awSF1mgO+Ir56Gt86xm5/UoQR1znzkQyiR3Vd6G53f4fTE8wuwdeLVo1LGLLzaZ7
+2CE5WcNy0TW0L7ZUcsXuD1eSOzCJ+KDmdTGCoAEN1A==
+=uj0e
+-----END PGP SIGNATURE-----
